@@ -13,7 +13,7 @@ ARG TOMCAT_FILE_PATH=/docker
 ENV APP_DATA_FOLDER=/var/lib/DockerizedSpringBoot
 ENV SAMPLE_APP_CONFIG=${APP_DATA_FOLDER}/config/
 	
-ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -	XX:MaxMetaspaceSize=512m -Xss512k"
+ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m -Xss512k"
 
 # Move the war file to the tomcat docker container
 WORKDIR /usr/local/tomcat/webapps
