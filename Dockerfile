@@ -19,5 +19,7 @@ ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSi
 WORKDIR /usr/local/tomcat/webapps
 COPY --from=maven /usr/src/app/target/DockerizedSpringBoot.war dockerized-spring-boot.war
 
+COPY ${TOMCAT_FILE_PATH}/* ${CATALINA_HOME}/conf/
+
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
