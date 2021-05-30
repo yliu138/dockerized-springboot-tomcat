@@ -47,7 +47,7 @@ spec:
             - "test"
     - name: build-image
       runAfter:
-        - install-dependencies-packaging
+        - test-locally
       params:
         - name: IMAGE
           value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
