@@ -6,8 +6,7 @@ WORKDIR /usr/src/app
 COPY . .
 RUN mvn clean package
 
-FROM tomcat:10.0.6-jdk11-openjdk
-ARG TOMCAT_FILE_PATH=/docker
+FROM tomcat:latest
 
 #Data & Config - Persistent Mount Point
 ENV APP_DATA_FOLDER=/var/lib/DockerizedSpringBoot
@@ -19,7 +18,8 @@ ENV CATALINA_OPTS="-Xms1024m -Xmx4096m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSi
 WORKDIR /usr/local/tomcat/webapps
 COPY --from=maven /usr/src/app/target/DockerizedSpringBoot.war dockerized-spring-boot.war
 
-COPY ${TOMCAT_FILE_PATH}/* ${CATALINA_HOME}/conf/
+# ARG TOMCAT_FILE_PATH=/docker
+# COPY ${TOMCAT_FILE_PATH}/* ${CATALINA_HOME}/conf/
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]

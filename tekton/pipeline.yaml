@@ -1,0 +1,59 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    app.openshift.io/runtime: nodejs
+  name: dockerized-springboot-tomcat
+spec:
+  workspaces:
+    - name: pipeline-shared-data
+      description: |
+        This workspace stores the cloned repository and is available to all steps
+  params:
+    - name: image-repo
+      type: string
+      description: Docker image name
+      default: quay.io/leoliu2011/dockerized-springboot-tomcat
+  tasks:
+    - name: clone-repository
+      params:
+        - name: url
+          value: https://github.com/yliu138/dockerized-springboot-tomcat.git
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+    - name: install-dependencies-packaging
+      taskRef:
+        name: maven
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      runAfter:
+        - clone-repository   
+    - name: test-locally
+      taskRef:
+        name: maven
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      runAfter:
+        - install-dependencies-packaging
+      params:
+        - name: GOALS
+          value: 
+            - "test"
+    - name: build-image
+      runAfter:
+        - install-dependencies-packaging
+      params:
+        - name: IMAGE
+          value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+      taskRef:
+        kind: Task
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data

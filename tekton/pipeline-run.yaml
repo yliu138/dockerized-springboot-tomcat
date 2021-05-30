@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: dockerized-springboot-tomcat-buildah-
+spec:
+  pipelineRef:
+    name: dockerized-springboot-tomcat
+  workspaces:
+    - name: pipeline-shared-data
+      persistentVolumeClaim:
+        claimName: leo-liu-live-pvc-2nd
+  
