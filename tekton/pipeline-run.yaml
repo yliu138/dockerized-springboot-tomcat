@@ -3,6 +3,7 @@ kind: PipelineRun
 metadata:
   generateName: dockerized-springboot-tomcat-buildah-
 spec:
+  serviceAccountName: build-bot
   pipelineRef:
     name: dockerized-springboot-tomcat
   workspaces:

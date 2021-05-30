@@ -31,6 +31,8 @@ spec:
       workspaces:
         - name: source
           workspace: pipeline-shared-data
+        - name: mvn-settings
+          workspace: pipeline-shared-data
       runAfter:
         - clone-repository   
     - name: test-locally
@@ -38,6 +40,8 @@ spec:
         name: maven
       workspaces:
         - name: source
+          workspace: pipeline-shared-data
+        - name: mvn-settings
           workspace: pipeline-shared-data
       runAfter:
         - install-dependencies-packaging
